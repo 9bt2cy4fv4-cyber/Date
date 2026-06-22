@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>У меня есть вопрос...</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffe5ec, #ffc2d1);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            overflow: hidden;
+            text-align: center;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+        }
+        h1 { color: #ff477e; font-size: 24px; margin-bottom: 10px; }
+        p { color: #4f5d75; font-size: 18px; }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            height: 50px;
+            position: relative;
+        }
+        button {
+            padding: 12px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            font-weight: bold;
+        }
+        #yesBtn { background-color: #ff477e; color: white; }
+        #yesBtn:hover { transform: scale(1.1); }
+        #noBtn {
+            background-color: #e0e1dd;
+            color: #4f5d75;
+            position: absolute;
+            left: 55%;
+        }
+        input[type="datetime-local"] {
+            padding: 10px;
+            margin-top: 15px;
+            border: 2px solid #ff477e;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+        }
+        .hidden { display: none; }
+        .heart { font-size: 50px; color: #ff477e; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="card" id="mainCard">
+    <div class="heart">❤️</div>
+    <h1>Привет!</h1>
+    <p>У меня есть к тебе предложение... Пойдешь со мной на свидание?</p>
+    
+    <div class="buttons">
+        <button id="yesBtn" onclick="sayYes()">Да!</button>
+        <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">Нет</button>
+    </div>
+</div>
+
+<div class="card hidden" id="successCard">
+    <div class="heart">✨</div>
+    <h1>Ура!</h1>
+    <p>Я безумно рад! Выбери, когда тебе удобно:</p>
+    <input type="datetime-local" id="datePicker">
+    <br><br>
+    <button id="yesBtn" onclick="sendDecision()">Подтвердить</button>
+</div>
+
+<script>
+    // Функция, которая заставляет кнопку "Нет" убегать
+    function moveButton() {
+        const noBtn = document.getElementById('noBtn');
+        // Случайные координаты в пределах видимости
+        const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 20);
+        const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 20);
+        
+        // Меняем позиционирование на fixed, чтобы кнопка летала по всему экрану
+        noBtn.style.position = 'fixed';
+        noBtn.style.left = x + 'px';
+        noBtn.style.top = y + 'px';
+    }
+
+    // Переход к экрану выбора даты
+    function sayYes() {
+        document.getElementById('mainCard').classList.add('hidden');
+        document.getElementById('successCard').classList.remove('hidden');
+    }
+
+    // Действие при подтверждении даты
+    function sendDecision() {
+        const date = document.getElementById('datePicker').value;
+        if (!date) {
+            alert('Пожалуйста, выбери дату и время!');
+            return;
+        }
+        
+        // Переформатируем дату для читаемости
+        const formattedDate = new Date(date).toLocaleString('ru-RU', {
+            day: 'numeric',
+            month: 'long',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+        alert(`Отлично! Записал: ${formattedDate}. Я напишу тебе в соцсетях, чтобы договориться о месте! 😉`);
+        
+        // Здесь можно сделать перенаправление на твой ВК или Telegram:
+        // window.location.href = "https://vk.com/твой_id";
+    }
+</script>
+
+</body>
+</html>
